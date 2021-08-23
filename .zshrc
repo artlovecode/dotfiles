@@ -83,6 +83,7 @@ plugins=(
   terraform
   vi-mode
   gcloud
+  tmux
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -176,6 +177,7 @@ source ~/.zplug/init.zsh
 zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf
 zplug 'wfxr/forgit'
 zplug 'zsh-users/zsh-autosuggestions'
+
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
