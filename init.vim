@@ -1,4 +1,3 @@
-" don't bother with vi compatibility
 set nocompatible
 
 
@@ -21,11 +20,11 @@ Plug 'sgur/vim-textobj-parameter'
 
 " VCS
 Plug 'tpope/vim-fugitive'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+" Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'junegunn/gv.vim'
 
 " File system navigation
-Plug 'preservim/nerdtree'
+" Plug 'preservim/nerdtree'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -55,14 +54,23 @@ Plug 'ParamagicDev/vim-medic_chalk'
 Plug 'atahabaki/archman-vim'
 Plug 'Rigellute/shades-of-purple.vim'
 Plug 'rakr/vim-colors-rakr'
+Plug 'folke/lsp-colors.nvim'
 
 " Autcompleters, fixers, linters, compilers
 Plug 'w0rp/ale'
+Plug 'vim-test/vim-test'
 " Plug 'neoclide/coc.nvim',     { 'branch': 'release'}
+
+" LSP
 Plug 'neovim/nvim-lspconfig'
 Plug 'glepnir/lspsaga.nvim', { 'branch': 'main' }
 Plug 'hrsh7th/nvim-compe'
 Plug 'nvim-treesitter/nvim-treesitter', {'branch': '0.5-compat', 'do': ':TSUpdate'}
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'folke/trouble.nvim', { 'branch': 'main' }
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 
 " VIM UI
 Plug 'vim-airline/vim-airline'
@@ -76,14 +84,16 @@ Plug 'ap/vim-css-color'
 Plug 'kristijanhusak/vim-carbon-now-sh'
 Plug 'jiangmiao/auto-pairs'
 Plug 'xolox/vim-misc'
+
 " Plug 'xolox/vim-easytags'
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'skywind3000/gutentags_plus'
+" Plug 'ludovicchabant/vim-gutentags'
+" Plug 'skywind3000/gutentags_plus'
 Plug 'vim-scripts/EnvEdit.vim'
 Plug 'jeffkreeftmeijer/vim-numbertoggle'
 Plug 'airblade/vim-rooter'
+Plug 'tpope/vim-eunuch'
 
-Plug 'ryanoasis/vim-devicons' " Always load this last, otherwise it breaks
+" Plug 'ryanoasis/vim-devicons' " Always load this last, otherwise it breaks
 
 call plug#end()
 
@@ -94,44 +104,6 @@ map z/ <Plug>(incsearch-easymotion-/)
 map z? <Plug>(incsearch-easymotion-?)
 map zg/ <Plug>(incsearch-easymotion-stay)
 map <Leader> <Plug>(easymotion-prefix)
-
-
-" Define mappings
-autocmd FileType denite call s:denite_my_settings()
-function! s:denite_my_settings() abort
-  nnoremap <silent><buffer><expr> <CR>
-        \ denite#do_map('do_action')
-  nnoremap <silent><buffer><expr> d
-        \ denite#do_map('do_action', 'delete')
-  nnoremap <silent><buffer><expr> p
-        \ denite#do_map('do_action', 'preview')
-  nnoremap <silent><buffer><expr> q
-        \ denite#do_map('quit')
-  nnoremap <silent><buffer><expr> i
-        \ denite#do_map('open_filter_buffer')
-  nnoremap <silent><buffer><expr> <Space>
-        \ denite#do_map('toggle_select').'j'
-endfunction
-
-let g:NERDCompactSexyComs = 1
-
-" Align line-wise comment delimiters flush left instead of following code indentation
-let g:NERDDefaultAlign = 'left'
-
-" Set a language to use its alternate delimiters by default
-let g:NERDAltDelims_java = 1
-
-" Add your own custom formats or override the defaults
-let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
-
-" Allow commenting and inverting empty lines (useful when commenting a region)
-let g:NERDCommentEmptyLines = 1
-
-" Enable trimming of trailing whitespace when uncommenting
-let g:NERDTrimTrailingWhitespace = 1
-
-" Enable NERDCommenterToggle to check all selected lines is commented or not 
-let g:NERDToggleCheckAllLines = 1
 
 
 "  ftdetect et al work by including this after the Vundle stuff
@@ -145,13 +117,8 @@ noremap <leader>fw :Ack<CR>
 
 let g:rooter_patterns = ['Taskfile.yml',  'go.mod', 'Makefile', 'Dockerfile', '.git/']
 
-autocmd BufEnter * lcd %:p:h"k
-" autocmd BufNewfile,BufRead,BufReadPost *.jsx set filetype=javascriptreact
-" autocmd BufNewfile,BufRead,BufReadPost *.tsx set filetype=typescriptreact
-
 set termguicolors
-let ayucolor="dark"
-colorscheme ayu
+colorscheme xcodedarkhc
 
 " enable syntax highlighting
 syntax enable
@@ -189,7 +156,7 @@ set wildmode=longest,list,full
 set mouse=a
 
 let b:ale_fixers = {'javascript': ['eslint'], 'vue': ['eslint'], 'typescript': ['eslint'], 'javascriptreact': ['eslint'], 'typescriptreact': ['eslint'], 'go' : ['gofmt']}
-let g:ale_fix_on_save = 0
+let g:ale_fix_on_save = 1
 let g:ale_linters_explicit = 1
 
 " Use gotags for fzf
@@ -206,13 +173,10 @@ noremap <leader>p :ALEFix<CR>
 noremap <leader>l :Align
 noremap <leader>ag :call fzf#vim#tags(expand('<cword>'))
 nnoremap <leader>b :CtrlPBuffer<CR>
-nnoremap <leader>d :NERDTreeToggle<CR>
-nnoremap <leader>f :NERDTreeFind<CR>
 nnoremap <leader>t :CtrlP<CR>
 nnoremap <leader>T :CtrlPClearCache<CR>:CtrlP<CR>
 nnoremap <leader>] :TagbarToggle<CR>
 nnoremap <leader><space> :call whitespace#strip_trailing()<CR>
-nnoremap <leader>g :GitGutterToggle<CR>
 noremap <leader>P :ALEFix<CR>
 noremap <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 
@@ -221,7 +185,6 @@ cnoremap w!! %!sudo tee > /dev/null %
 
 " plugin settings
 let g:ctrlp_match_window = 'order:ttb,max:20'
-let g:NERDSpaceDelims=1
 
 " Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
 if executable('ag')
@@ -409,7 +372,7 @@ endif
 " " Add `:OR` command for organize imports of the current buffer.
 " command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
-let g:airline_theme='ayu'
+let g:airline_theme='xcodedarkhc'
 
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
@@ -451,25 +414,13 @@ hi Pmenu ctermbg=brown gui=bold
 
 set undofile
 
-noremap <leader>T :Make! test<CR>
-
 noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 
-nnoremap <silent> <Leader>v :NERDTreeFind<CR>
-let NERDTreeQuitOnOpen = 1
-let NERDTreeAutoDeleteBuffer = 1
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
-let g:NERDTreeHijackNetrw=0
 
 
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
-map <leader>tj :GoAddTags json<CR> 
-map <leader>ts :GoAddTags 
 let g:go_addtags_transform = "lispcase"
 set foldmethod=syntax
 nnoremap <leader>O zczA
@@ -521,10 +472,10 @@ buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
 buf_set_keymap('n', '<C-k>', '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>', opts)
 buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
 buf_set_keymap('n', '<leader>rn', '<cmd>:Lspsaga rename<CR>', opts)
+buf_set_keymap('n', '<leader>tt', '<cmd>:Dispatch task test<CR>', opts)
 
 buf_set_keymap('n', '<leader>ca', '<cmd>:Lspsaga code_action<CR>', opts)
 
-buf_set_keymap('n', 'gr', '<cmd>:Lspsaga lsp_finder<CR>', opts)
 buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
 buf_set_keymap('n', '[d', '<cmd>:Lspsaga diagnostic_jump_prev<CR>', opts)
 buf_set_keymap('n', ']d', '<cmd>:Lspsaga diagnostic_jump_next<CR>', opts)
@@ -582,6 +533,46 @@ require'nvim-treesitter.configs'.setup {
   }
 }
 
+require("trouble").setup {
+  -- your configuration comes here
+  -- or leave it empty to use the default settings
+  -- refer to the configuration section below
+}
+vim.api.nvim_set_keymap("n", "<leader>xx", "<cmd>Trouble<cr>",
+  {silent = true, noremap = true}
+)
+vim.api.nvim_set_keymap("n", "<leader>xw", "<cmd>Trouble lsp_workspace_diagnostics<cr>",
+  {silent = true, noremap = true}
+)
+vim.api.nvim_set_keymap("n", "<leader>xd", "<cmd>Trouble lsp_document_diagnostics<cr>",
+  {silent = true, noremap = true}
+)
+vim.api.nvim_set_keymap("n", "<leader>xl", "<cmd>Trouble loclist<cr>",
+  {silent = true, noremap = true}
+)
+vim.api.nvim_set_keymap("n", "<leader>xq", "<cmd>Trouble quickfix<cr>",
+  {silent = true, noremap = true}
+)
+vim.api.nvim_set_keymap("n", "<leader<leader>>gr", "<cmd>Trouble lsp_references<cr>",
+  {silent = true, noremap = true}
+)
+
+require'nvim-web-devicons'.setup {
+ -- your personnal icons can go here (to override)
+ -- DevIcon will be appended to `name`
+ override = {
+  zsh = {
+    icon = "",
+    color = "#428850",
+    name = "Zsh"
+  }
+ };
+ -- globally enable default icons (default to false)
+ -- will get overriden by `get_icons` option
+ default = true;
+}
+
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local servers = { "gopls", "tsserver" }
@@ -593,4 +584,57 @@ for _, lsp in ipairs(servers) do
       }
     }
 end
+
+vim.g["test#javascript#runner"] = "yarn test"
+vim.g["test#strategy"] = "neovim"
+vim.g["test#javascript#jest#options"] = {
+  all = "--silent",
+}
+
+local last_test_cwd = ""
+
+local call_with_test_directory_as_cwd = function(command)
+  local cwd = vim.api.nvim_eval("getcwd()")
+  vim.o.autochdir = true
+  last_test_cwd = vim.api.nvim_eval("getcwd()")
+  vim.api.nvim_command(command)
+  vim.o.autochdir = false
+  vim.api.nvim_command("cd " .. cwd)
+end
+
+local call_with_last_test_cwd = function(command)
+  local cwd = vim.api.nvim_eval("getcwd()")
+  vim.api.nvim_command("cd " .. last_test_cwd)
+  vim.api.nvim_command(command)
+  vim.api.nvim_command("cd " .. cwd)
+end
+
+require("lsp-colors").setup({
+  Error = "#db4b4b",
+  Warning = "#e0af68",
+  Information = "#0db9d7",
+  Hint = "#10B981"
+})
+
 EOF
+
+" Set the title of the Terminal to the currently open file
+function! SetTerminalTitle()
+    let titleString = expand('%:t')
+    if len(titleString) > 0
+        let &titlestring = expand('%:t')
+        " this is the format iTerm2 expects when setting the window title
+        let args = "\033];".&titlestring."\007"
+        let cmd = 'silent !echo -e "'.args.'"'
+        execute cmd
+        redraw!
+    endif
+endfunction
+
+autocmd BufEnter * call SetTerminalTitle()
+
+" Telescope
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
