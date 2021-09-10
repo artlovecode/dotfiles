@@ -20,7 +20,6 @@ Plug 'sgur/vim-textobj-parameter'
 
 " VCS
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
 " Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'junegunn/gv.vim'
 
@@ -86,7 +85,7 @@ Plug 'ap/vim-css-color'
 Plug 'kristijanhusak/vim-carbon-now-sh'
 Plug 'jiangmiao/auto-pairs'
 Plug 'xolox/vim-misc'
-Plug 'kshenoy/vim-signature'
+Plug 'andymass/vim-matchup'
 
 " Plug 'xolox/vim-easytags'
 " Plug 'ludovicchabant/vim-gutentags'
@@ -321,7 +320,7 @@ endif
 " Formatting selected code.
 " xmap <leader>f  <Plug>(coc-format-selected)
 " nmap <leader>f  <Plug>(coc-format-selected)
-  
+
 " augroup mygroup
 "   autocmd!
 "   " Setup formatexpr specified filetype(s).
@@ -483,25 +482,22 @@ vim.cmd(
 "command! LspDiagLine lua vim.lsp.diagnostic.show_line_diagnostics()")
 vim.cmd("command! LspSignatureHelp lua vim.lsp.buf.signature_help()")
 -- See `:help vim.lsp.*` for documentation on any of the below functions
-buf_set_keymap('n', 'gD', '<Cmd>:LspTypeDef<CR>', opts)
-buf_set_keymap('n', 'gd', '<Cmd>:LspDef<CR>', opts)
-buf_set_keymap('n', '<leader>gs', '<Cmd>:LspImplementation<CR>')
-buf_set_keymap('n', 'K', '<Cmd>:LspHover<CR>', opts)
-buf_set_keymap('n', '<C-k>', '<Cmd>:LspSignatureHelp<CR>', opts)
-buf_set_keymap('n', '<leader>D', '<Cmd>:LspTypeDef<CR>', opts)
-buf_set_keymap('n', '<leader>rn', '<Cmd>:LspRename<CR>', opts)
+buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+buf_set_keymap('n', 'K', '<Cmd>:Lspsaga hover_doc<CR>', opts)
+buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+buf_set_keymap('n', '<C-k>', '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>', opts)
+buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+buf_set_keymap('n', '<leader>rn', '<cmd>:Lspsaga rename<CR>', opts)
+buf_set_keymap('n', '<leader>tt', '<cmd>:Dispatch task test<CR>', opts)
 
-buf_set_keymap('n', '<leader>ca', '<Cmd>:LspCodeAction<CR>', opts)
+buf_set_keymap('n', '<leader>ca', '<cmd>:Lspsaga code_action<CR>', opts)
 
-buf_set_keymap('n', '<leader>e', '<Cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-buf_set_keymap('n', '[d', '<Cmd>:LspDiagPrev<CR>', opts)
-buf_set_keymap('n', ']d', '<Cmd>:LspDiagNext<CR>', opts)
-buf_set_keymap('n', '<leader>q', '<Cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-buf_set_keymap("n", "<leader>f", "<Cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-
-buf_set_keymap('n', '<leader>ff', '<Cmd>:LspOrganize<CR>')
-buf_set_keymap('n', '<leader>a', '<Cmd>:LspDiagLine<CR>')
-
+buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+buf_set_keymap('n', '[d', '<cmd>:Lspsaga diagnostic_jump_prev<CR>', opts)
+buf_set_keymap('n', ']d', '<cmd>:Lspsaga diagnostic_jump_next<CR>', opts)
+buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+buf_set_keymap("n", "<leader>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
 end
 
@@ -541,6 +537,9 @@ source = {
 }
 
 require'nvim-treesitter.configs'.setup {
+  matchup = {
+    enable = true,              -- mandatory, false will disable the whole extension
+  },
   highlight = {
   enable = true,
   -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
