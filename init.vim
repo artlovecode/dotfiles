@@ -20,6 +20,7 @@ Plug 'sgur/vim-textobj-parameter'
 
 " VCS
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 " Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'junegunn/gv.vim'
 
@@ -79,11 +80,13 @@ Plug 'vim-scripts/RltvNmbr.vim'
 
 " Misc
 Plug 'tpope/vim-dispatch'
+Plug 'radenling/vim-dispatch-neovim'
 Plug 'Shougo/echodoc.vim'
 Plug 'ap/vim-css-color'
 Plug 'kristijanhusak/vim-carbon-now-sh'
 Plug 'jiangmiao/auto-pairs'
 Plug 'xolox/vim-misc'
+Plug 'kshenoy/vim-signature'
 
 " Plug 'xolox/vim-easytags'
 " Plug 'ludovicchabant/vim-gutentags'
@@ -318,7 +321,7 @@ endif
 " Formatting selected code.
 " xmap <leader>f  <Plug>(coc-format-selected)
 " nmap <leader>f  <Plug>(coc-format-selected)
-
+  
 " augroup mygroup
 "   autocmd!
 "   " Setup formatexpr specified filetype(s).
@@ -464,23 +467,41 @@ local opts = { noremap=true, silent=true }
 
 local saga = require 'lspsaga'
 saga.init_lsp_saga {}
+
+vim.cmd("command! LspDef lua vim.lsp.buf.definition()")
+vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting()")
+vim.cmd("command! LspCodeAction lua vim.lsp.buf.code_action()")
+vim.cmd("command! LspHover lua vim.lsp.buf.hover()")
+vim.cmd("command! LspRename lua vim.lsp.buf.rename()")
+vim.cmd("command! LspOrganize lua lsp_organize_imports()")
+vim.cmd("command! LspRefs lua vim.lsp.buf.references()")
+vim.cmd("command! LspTypeDef lua vim.lsp.buf.type_definition()")
+vim.cmd("command! LspImplementation lua vim.lsp.buf.implementation()")
+vim.cmd("command! LspDiagPrev lua vim.lsp.diagnostic.goto_prev()")
+vim.cmd("command! LspDiagNext lua vim.lsp.diagnostic.goto_next()")
+vim.cmd(
+"command! LspDiagLine lua vim.lsp.diagnostic.show_line_diagnostics()")
+vim.cmd("command! LspSignatureHelp lua vim.lsp.buf.signature_help()")
 -- See `:help vim.lsp.*` for documentation on any of the below functions
-buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-buf_set_keymap('n', 'K', '<Cmd>:Lspsaga hover_doc<CR>', opts)
-buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-buf_set_keymap('n', '<C-k>', '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>', opts)
-buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-buf_set_keymap('n', '<leader>rn', '<cmd>:Lspsaga rename<CR>', opts)
-buf_set_keymap('n', '<leader>tt', '<cmd>:Dispatch task test<CR>', opts)
+buf_set_keymap('n', 'gD', '<Cmd>:LspTypeDef<CR>', opts)
+buf_set_keymap('n', 'gd', '<Cmd>:LspDef<CR>', opts)
+buf_set_keymap('n', '<leader>gs', '<Cmd>:LspImplementation<CR>')
+buf_set_keymap('n', 'K', '<Cmd>:LspHover<CR>', opts)
+buf_set_keymap('n', '<C-k>', '<Cmd>:LspSignatureHelp<CR>', opts)
+buf_set_keymap('n', '<leader>D', '<Cmd>:LspTypeDef<CR>', opts)
+buf_set_keymap('n', '<leader>rn', '<Cmd>:LspRename<CR>', opts)
 
-buf_set_keymap('n', '<leader>ca', '<cmd>:Lspsaga code_action<CR>', opts)
+buf_set_keymap('n', '<leader>ca', '<Cmd>:LspCodeAction<CR>', opts)
 
-buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-buf_set_keymap('n', '[d', '<cmd>:Lspsaga diagnostic_jump_prev<CR>', opts)
-buf_set_keymap('n', ']d', '<cmd>:Lspsaga diagnostic_jump_next<CR>', opts)
-buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-buf_set_keymap("n", "<leader>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+buf_set_keymap('n', '<leader>e', '<Cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+buf_set_keymap('n', '[d', '<Cmd>:LspDiagPrev<CR>', opts)
+buf_set_keymap('n', ']d', '<Cmd>:LspDiagNext<CR>', opts)
+buf_set_keymap('n', '<leader>q', '<Cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+buf_set_keymap("n", "<leader>f", "<Cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+
+buf_set_keymap('n', '<leader>ff', '<Cmd>:LspOrganize<CR>')
+buf_set_keymap('n', '<leader>a', '<Cmd>:LspDiagLine<CR>')
+
 
 end
 
