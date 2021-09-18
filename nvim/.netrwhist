@@ -1,0 +1,10 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =8
+let g:netrw_dirhist_8='/Users/audunmo/work/cloud-3pi-frontend/frontend/build/static/js'
+let g:netrw_dirhist_7='/Users/audunmo/work/cloud-bundle-proxy/.cloudbuild'
+let g:netrw_dirhist_6='/Users/audunmo/work/cloud-3pi-authorization-frontend/.git'
+let g:netrw_dirhist_5='/Users/audunmo/work/cloud-3pi-authorization'
+let g:netrw_dirhist_4='/Users/audunmo/work/read-on-remarkable/app/components'
+let g:netrw_dirhist_3='/Users/audunmo/work/cloud-3pi-authorization'
+let g:netrw_dirhist_2='/Users/audunmo/work/cloud-3pi-authorization/frontend/src'
+let g:netrw_dirhist_1='/Users/audunmo/work/cloud-document-storage/document-storage/_storage_tests/notifications_test'

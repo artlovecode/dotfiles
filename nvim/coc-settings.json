@@ -1,0 +1,10 @@
+{
+  "suggest.echodocSupport": true,
+ "languageserver": {
+    "terraform": {
+      "command": "terraform-lsp",
+      "filetypes": ["terraform", "tf"],
+      "initializationOptions": {}
+    }
+  }
+}

@@ -124,7 +124,7 @@ export PATH="/Users/audunmo/bin:$PATH"
 export FZF_DEFAULT_COMMAND="rg --files --hidden"
 
 alias ezsh="vim ~/.zshrc && source ~/.zshrc"
-alias evim="vim ~/.config/nvim/init.vim"
+alias evim="vim ~/.config/nvim/init.lua"
 
 export DOCKER_HOST=tcp://localhost:2375
 
